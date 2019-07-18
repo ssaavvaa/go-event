@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "apollo-link-ws": "^1.0.18",
+    "gh-pages": "^2.0.1",
     "prettier": "^1.18.2",
     "stats-webpack-plugin": "^0.7.0"
   },
@@ -57,6 +58,7 @@
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },

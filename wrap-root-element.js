@@ -9,8 +9,6 @@ import { onError } from "apollo-link-error";
 import { split } from 'apollo-link'
 import { getMainDefinition } from 'apollo-utilities'
 import { WebSocketLink } from 'apollo-link-ws';
-import fetch from 'isomorphic-fetch';
-
 
 
 const GRAPHQL_ENDPOINT = "ws://localhost:5000/graphql";
@@ -20,8 +18,6 @@ const wsLink = new WebSocketLink({
       reconnect: true
     }
   });
-
-
 
 
 const error = onError(({ graphQLErrors, networkError }) => {
@@ -52,7 +48,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 
-
 const link = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query)
@@ -63,13 +58,10 @@ const link = split(
 )
 
 
-
 const client = new ApolloClient({
   error,
   link,
-  cache: new InMemoryCache(),
-  fetch,
-  networkInterface: wsLink,
+  cache: new InMemoryCache()
 });
 
 export const wrapRootElement = ({ element}) => (
