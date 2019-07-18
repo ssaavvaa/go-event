@@ -8,10 +8,7 @@ const GoEvent = ({ userId , refetch, refresh,  eventId }) => {
 
 
 const followEvent = goEvent => {
-    goEvent().then(({data}) => {
-   console.log("nutated")
-
-})
+   return  goEvent()
 }
 
     return (

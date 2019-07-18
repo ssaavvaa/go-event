@@ -34,6 +34,11 @@
  
 }
 
+.chat_window > div:first-child{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
 .bottom_messages{
     display: flex;
     flex-direction: column;
@@ -42,7 +47,9 @@
     margin-bottom: 20px;
 }
 
-
+.delete_message:hover{
+    cursor:pointer;
+}
 
 .message{
 padding:10px;

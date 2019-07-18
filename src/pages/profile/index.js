@@ -15,21 +15,19 @@ import {navigateTo} from '../../Helpers/helpers';
 
 const Profile = ({getCurrentUser}) => {
 
+
+
 const handleDelete = deleteCreatedEvent => {
     const confirmDelete = window.confirm("are you sure ?");
     if(confirmDelete){
-       deleteCreatedEvent().then(({data}) => {
-           console.log(data)
-       })
+      return deleteCreatedEvent()
     }
 }
 
 const handleDelete_2 = deleteAttendingEvent => {
     const confirmDelete = window.confirm("are you sure ?");
     if(confirmDelete){
-        deleteAttendingEvent().then(({data}) => {
-           console.log(data)
-       })
+       return deleteAttendingEvent()
     }
 }
 
@@ -39,11 +37,12 @@ if(!getCurrentUser ){
  }
 
 
+
 const { _id } = getCurrentUser;
 
     return (
     <Layout>
-    <SEO title="sign-in" />
+    <SEO title="profile" />
     <Query query ={GET_PROFILE_INFO} variables={{_id}} >
     {({data, loading , error}) => {
               console.log(data)
@@ -62,16 +61,16 @@ const { _id } = getCurrentUser;
              :{new Date(Number(joinDate)).getMinutes().toString().padStart(2, "0")}
              :{new Date(Number(joinDate)).getSeconds().toString().padStart(2, "0")}
              </p>
-             <h4 style={{textDecoration:"underline"}}>{username}'s created events:</h4>
-             {!createdEvents.length && <p>no events created yet</p>}
-             {createdEvents.length > 0 && 
+             <h4 style={{textDecoration:"underline"}}>{username}'s Created Events:</h4>
+             {!createdEvents.length && <p>No Events Created Yet</p>}
+             {createdEvents.length > 0 &&
              <ul>
-                {createdEvents.map(event => (
+                {createdEvents !== 0 && createdEvents.map(event => (
                     <li key = {event._id}>
                     <span style={{marginRight:'5px'}}>{event.heading}</span>
                     <div>
                     <button onClick = {() => navigateTo(`/event?_id=${event._id}`)}>event</button>
-                    <Mutation refetchQueries={[{ query: GET_PROFILE_INFO, variables:{ _id } } , { query: GET_ALL_EVENTS}]}  mutation={DELETE_CREATED_EVENT} variables={{ _id:event._id , userId:_id}} >
+                    <Mutation  refetchQueries={[{ query: GET_PROFILE_INFO, variables:{ _id } }, { query: GET_ALL_EVENTS}]}    mutation={DELETE_CREATED_EVENT} variables={{ _id:event._id , userId:_id}} >
                         {deleteCreatedEvent => (
                                 <button onClick={() => handleDelete(deleteCreatedEvent)}>
                                  delete
@@ -84,7 +83,7 @@ const { _id } = getCurrentUser;
                 ))}
              </ul>
             }
-            <h4 style={{textDecoration:"underline"}}>{username}'s attending events:</h4>
+            <h4 style={{textDecoration:"underline"}}>{username}'s Attending Events:</h4>
             {userEvents.length > 0 &&
              <ul>
                 {userEvents.map(event => (

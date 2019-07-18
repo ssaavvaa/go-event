@@ -9,15 +9,26 @@ import { onError } from "apollo-link-error";
 import { split } from 'apollo-link'
 import { getMainDefinition } from 'apollo-utilities'
 import { WebSocketLink } from 'apollo-link-ws';
+import fetch from 'isomorphic-fetch';
 
+// http://localhost:5000/graphql
+//https://mysterious-stream-23271.herokuapp.com/graphql
 
-const GRAPHQL_ENDPOINT = "ws://localhost:5000/graphql";
+// ws://localhost:5000/graphql
+// wss://mysterious-stream-23271.herokuapp.com/graphql
+
+const GRAPHQL_ENDPOINT = 'wss://mysterious-stream-23271.herokuapp.com/graphql';
+const uri = 'https://mysterious-stream-23271.herokuapp.com/graphql';
+
 const wsLink = new WebSocketLink({
     uri: GRAPHQL_ENDPOINT,
     options: {
       reconnect: true
     }
   });
+
+
+
 
 
 const error = onError(({ graphQLErrors, networkError }) => {
@@ -34,18 +45,22 @@ const error = onError(({ graphQLErrors, networkError }) => {
 
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql',
+  uri
 });
+
+
+
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
   return {
     headers: {
       ...headers,
-      authorization: token
+      authorization: token,
     }
   }
 });
+
 
 
 const link = split(
@@ -58,7 +73,9 @@ const link = split(
 )
 
 
+
 const client = new ApolloClient({
+  fetch,
   error,
   link,
   cache: new InMemoryCache()

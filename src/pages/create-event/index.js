@@ -57,14 +57,7 @@ const handleSubmit = ( event , addEvent ) => {
 })
 }
 
-
 const { username , address, city , country , heading , description } = state;
-
-const validateForm = () => {
-    const isInvalid = !username || !address || !city || !country  || !heading || !description
-    return isInvalid;
-}
-
 
 
 if(!props.getCurrentUser){
@@ -76,14 +69,38 @@ const { _id } = props.getCurrentUser;
 
  return(
  <Layout>
-    <SEO title="sign-in" />
+    <SEO title="create" />
     <Mutation mutation = {ADD_EVENT} 
               variables={{ _id ,username , address, city , country , heading , description}}
               refetchQueries={[{ query: GET_PROFILE_INFO, variables:{ _id } }, { query: GET_ALL_EVENTS}]} 
               >
         {(addEvent, {data , loading , error}) => {
             if( loading ) { return <Loading />}
-            if( error ) { return <Error error={error} />}
+            if( error ) { return (
+                <form className="create_event_form" onSubmit = {event => handleSubmit(event,addEvent)} >
+                {loading && <Loading />}
+                <label htmlFor="heading">Heading</label>
+                <input type="text" onChange={val => onChangeState(val)} maxLength="15" name='heading' id="heading" placeholder="heading" value={heading} />
+                <label htmlFor="decription">Description</label>
+                <textarea type="text" onChange={val => onChangeState(val)} name="description" id="description" placeholder="description" value={description} />
+                <label name="country" htmlFor="country">Country</label>
+                <CountryDropdown
+                  id="country"
+                  value={country}
+                  onChange={val => setCountry(val)} />
+                  <label htmlFor="city">City</label>
+                <RegionDropdown
+                  id="city"
+                  country={country}
+                  value={city}
+                  onChange={val => setCity(val)} />
+                    <label htmlFor="address">Address</label>
+                 <textarea style={{ padding:"20px"}} maxLength="30" type="text" onChange={val => onChangeState(val)} name="address" id="address" placeholder="address" value={address} />
+                 <button disabled = { loading } type="submit">SUBMIT</button>
+                 <Error error={error} />
+            </form>
+            )}
+
             return(
     <form className="create_event_form" onSubmit = {event => handleSubmit(event,addEvent)} >
         {loading && <Loading />}
@@ -105,7 +122,7 @@ const { _id } = props.getCurrentUser;
             <label htmlFor="address">Address</label>
          <textarea style={{ padding:"20px"}} maxLength="30" type="text" onChange={val => onChangeState(val)} name="address" id="address" placeholder="address" value={address} />
          {error && <Error error = {error} />}
-         <button disabled = {loading || validateForm()} type="submit">SUBMIT</button>
+         <button disabled = {loading} type="submit">SUBMIT</button>
          {error && <Error error = {error} />}
     </form>
 

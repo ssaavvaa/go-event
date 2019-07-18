@@ -4,13 +4,25 @@ import '../styles/header.css';
 import { Link } from "gatsby";
 import  withSession from './withSession';
 import SignOut from './sign-out';
+import $ from "jquery";
+
+
+
+
 
 
 const Header = ({ getCurrentUser }) => {
 
+const toggle = () => {
+  $(".header_wrapper").slideToggle().css({display:"flex"})
+}
+
 if(!getCurrentUser){
   return (
     <header>
+      <div className="toggleMenuWrapper">
+    <img src ={require('../images/toggle.png')} alt="toggle" onClick={() => toggle()} className="toggleMenu"/>
+    </div>
       <nav className="header_wrapper">
         <li><Link activeClassName="active" to="/"> Home </Link></li>
         <li><Link activeClassName="active" to="/search"> Search </Link></li>
@@ -24,6 +36,9 @@ if(!getCurrentUser){
 return(
   <header>
     <h4>Welcome , <strong>{getCurrentUser.username}</strong></h4>
+    <div className="toggleMenuWrapper">
+    <img src ={require('../images/toggle.png')} alt="toggle" onClick={() => toggle()} className="toggleMenu"/>
+    </div>
     <nav className="header_wrapper">
     <li><Link activeClassName="active" to="/"> Home </Link></li>
     <li><Link activeClassName="active" to="/search"> Search </Link></li>

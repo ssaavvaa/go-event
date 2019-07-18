@@ -17,7 +17,7 @@ const IndexPage = ({ getCurrentUser }) => {
   return(
   <Layout>
     <SEO title="Home" />
-    <h1 className="main_heading">All Hangouts</h1>
+    <h1 className="main_heading">All Events</h1>
     <Query query ={GET_ALL_EVENTS}>
       {({data, loading , error}) => {
         if( loading ){ return <Loading /> }

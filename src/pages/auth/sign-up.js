@@ -1,4 +1,4 @@
-import React , { Fragment, useState }  from "react";
+import React , {  useState }  from "react";
 import Layout from '../../components/layout';
 import SEO from '../../components/seo';
 import { Mutation } from 'react-apollo';
@@ -6,13 +6,14 @@ import { SIGNUP_USER } from '../../queries/index';
 import '../../styles/sign-up.css';
 import Error from '../../components/Error';
 import Loading from'../../components/loading';
-import { navigateTo } from '../../Helpers/helpers';
+import Success from '../../components/Success';
 
 const initialState = {
     username:'',
     email:'',
     password:'',
-    passwordConfirmation:''
+    passwordConfirm:'',
+    successSignUp:false
 }
 
 
@@ -25,35 +26,30 @@ const SignUp = () => {
       setState({...state, [name]:value})
     }
 
-    const validateForm = () => {
-        const { username , email, password , passwordConfirmation } = state;
-
-       const isInvalid = !username || !email || !password || password !== passwordConfirmation;
-       return isInvalid
-    }
-
-    const onSubmit = (event,signupUser) => {
+    const onSubmit = ( event , signupUser ) => {
         event.preventDefault()
         signupUser().then(({data}) => {
         localStorage.setItem('token' , data.signupUser.token);
-        setState(initialState);
-        navigateTo('/');
+
  })
     }
 
-    const { username , email, password , passwordConfirmation } = state;
+const success = () => {
+    setState({...initialState, successSignUp:true});
+}
+
+    const { successSignUp, username , email, password , passwordConfirm } = state;
 
     return(
         <Layout>
         <SEO title="sign-up" />
         <h2 className="sign_header" >sign up</h2>
-        <Mutation mutation ={SIGNUP_USER} variables = {{username , email, password}}>
+        <Mutation onCompleted={success} mutation ={SIGNUP_USER} 
+                  variables = {{username , email, password , passwordConfirm}}>
             {(signupUser , {data , loading , error}) => {
                 if(loading) { return <Loading />}
-                if(error) { return <Error error={error} />}
-                return (
-                    <Fragment>
-                    <form className="formStyles" onSubmit = {event => onSubmit(event,signupUser)}>
+                if(error) { return (
+                    <form className="formStyles" >
                     <input value = {username} 
                            onChange = {handleChange} 
                            type="text" 
@@ -69,13 +65,39 @@ const SignUp = () => {
                            type="password" 
                            name = "password" 
                            placeholder="password" />
-                    <input value = {passwordConfirmation} onChange = {handleChange} 
-                           type="password" name = "passwordConfirmation" 
+                    <input value = {passwordConfirm} onChange = {handleChange} 
+                           type="password" name = "passwordConfirm" 
                            placeholder="confirm password"/>
-                    <button disabled={loading || validateForm()} className="button-primary" type ="submit">Submit</button>
-                    {error && <Error error ={error} />}
+                    <button onClick ={event => onSubmit(event,signupUser)} className="button-primary" type ="submit">Submit</button>
+                    <Error error={error} />
                 </form>
-                </Fragment>
+                )
+                    }
+                return (
+                    <>
+                    <form className="formStyles">
+                    <input value = {username} 
+                           onChange = {handleChange} 
+                           type="text" 
+                           name = "username" 
+                           placeholder="username" />
+                    <input value = {email} 
+                           onChange = {handleChange} 
+                           type="email" 
+                           name = "email" 
+                           placeholder="email" />
+                    <input value = {password} 
+                           onChange = {handleChange} 
+                           type="password" 
+                           name = "password" 
+                           placeholder="password" />
+                    <input value = {passwordConfirm} onChange = {handleChange} 
+                           type="password" name = "passwordConfirm" 
+                           placeholder="confirm password"/>
+                    <button onClick ={event => onSubmit(event,signupUser)}  className="button-primary" type ="submit">Submit</button>
+                </form>
+                {successSignUp && <Success success="SUCCESS!" />}
+                </>
                 )
             }}
         </Mutation>

@@ -8,13 +8,13 @@ import { gql } from 'apollo-boost';
 export const NEW_MESSAGE = gql`
 subscription($eventId:ID!){
   comment(eventId:$eventId){
-    _id
-  message
-  username
-  createDate
+            _id
   }
 }
 `
+
+
+
 
 
 
@@ -55,6 +55,7 @@ export const GET_EVENT = gql`
             username
             eventId
             createDate
+            userId
             _id
         }
         likes
@@ -115,6 +116,15 @@ export const SEARCH_EVENT = gql`
 //MUTATION MUTATION MUTATION MUTATION MUTATION MUTATION MUTATION
 
 
+export const REMOVE_MESSAGE = gql`
+mutation($_id:ID! , $eventId:ID!){
+    deleteMessage(_id:$_id, eventId:$eventId ){
+        _id
+        message
+    }
+}
+
+`
 
 export const GO_EVENT = gql`
 mutation($userId:String!, $eventId:String!){
@@ -125,9 +135,8 @@ mutation($userId:String!, $eventId:String!){
 `
 
 export const POST_MESSAGE = gql`
-mutation($eventId:String! , $username:String! , $message:String!){
-    postMessage( eventId:$eventId , username:$username , message:$message){
-
+mutation($eventId:String! , $userId:ID! $username:String! , $message:String!){
+    postMessage( eventId:$eventId , userId:$userId , username:$username , message:$message){
             _id
     }
 }
@@ -172,8 +181,8 @@ mutation( $_id:ID!
 `
 
 export const SIGNUP_USER = gql`
-mutation($username:String!, $email:String!, $password:String!){
-    signupUser(username:$username, email:$email, password:$password){
+mutation($username:String!, $email:String!, $password:String!, $passwordConfirm:String!){
+    signupUser(username:$username, email:$email, password:$password, passwordConfirm:$passwordConfirm){
         token
     }
 }

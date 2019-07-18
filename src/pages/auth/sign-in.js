@@ -53,7 +53,23 @@ const SignIn = (props) => {
         <Mutation mutation ={SIGNIN_USER} variables = {{username , password}}>
             {(signinUser , {data , loading , error}) => {
                 if (loading) { return <Loading /> }
-                if (error) { return <Error error={error} />}
+                if (error) { return (
+                    <form className="formStyles" onSubmit = {event => onSubmit(event,signinUser)}>
+                    <input value = {username} 
+                           onChange = {handleChange} 
+                           type="text" 
+                           name = "username" 
+                           placeholder="username" />
+                    <input value = {password} 
+                           onChange = {handleChange} 
+                           type="password" 
+                           name = "password" 
+                           placeholder="password" />
+                    <button disabled={loading || validateForm()} className="button-primary" type ="submit">Submit</button>
+                    <Error error={error} />
+                </form>)
+
+                }
                 return (
                     <Fragment>
                     <form className="formStyles" onSubmit = {event => onSubmit(event,signinUser)}>
@@ -68,7 +84,6 @@ const SignIn = (props) => {
                            name = "password" 
                            placeholder="password" />
                     <button disabled={loading || validateForm()} className="button-primary" type ="submit">Submit</button>
-                    {error && <Error error ={error} />}
                 </form>
                 </Fragment>
                 )
