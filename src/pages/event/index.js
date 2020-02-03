@@ -15,8 +15,9 @@ const Event = (props) => {
 
 
 const _id = props.location.search.split('?_id=')[1]
+
 const updateMessages = () => {
- props.reFetchObservableQueries()
+        props.reFetchObservableQueries()
 }
 
 let user_id;
@@ -46,7 +47,7 @@ if(props.getCurrentUser){
                   {messages.map(message => {
                       return(
                         message.userId === user_id?
-                        <div style={{ position:"relative",textAlign:"left",background:"rgb(220,250,250)"}} key={message._id} className="message">
+                        <div style={{ position:"relative",textAlign:"right",background:"rgb(220,250,250)"}} key={message._id} className="message">
                         <span><small>{message.username}</small></span>:{" "}
                         <span><small>
                 {new Date(Number(message.createDate)).toDateString()}
@@ -58,7 +59,7 @@ if(props.getCurrentUser){
                         <p><strong>{message.message}</strong></p>
                         <RemoveMessage _id = {message._id} eventId={_id} />
                         </div>
-                        :<div style={{textAlign:"right"}} key={message._id} className="message">
+                        :<div style={{textAlign:"left"}} key={message._id} className="message">
                         <span><small>{message.username}</small></span>:{" "}
                         <span><small>
                 {new Date(Number(message.createDate)).toDateString()}

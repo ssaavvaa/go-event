@@ -17,6 +17,7 @@ const toggle = () => {
   $(".header_wrapper").slideToggle().css({display:"flex"})
 }
 
+
 if(!getCurrentUser){
   return (
     <header>

@@ -21,7 +21,7 @@ const deleteMessages = (deleteMessage) => {
                 width:"26px",
                 position:"absolute",
                 top:6,
-                right:6,
+                left:6,
                 height:"26px"
             }} className="delete_message" onClick = {() => deleteMessages(deleteMessage)} src = {require('../images/delete.png')} />
           )}}

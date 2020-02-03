@@ -30,10 +30,11 @@ const Layout = ({ children }) => {
              color:'white'}}>
   
         <div style={{background:"rgb(250, 246, 246)",
-                     width:"100%",
+                     maxWidth:"100%",
                      color:"black",
                      textAlign:"center",
-                     padding:10,
+                     padding:"10px 30px",
+                     borderRadius:"5px",
                      borderTop:"10px solid black"
                      }}>
                        made by:  <a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/uajumpers" style={{cursor:"pointer", color:"darkblue",textDecoration:"underline"}}>Anton Savytskyi</a>
